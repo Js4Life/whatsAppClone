@@ -6,18 +6,41 @@ import ChatListIem from '../components/ChatListItem'
 import ChatRooms from '../data/ChatRooms';
 import NewMessageButton from '../components/NewMessageButton';
 import ContactListItem from '../components/ContactListItem';
-import Users from '../data/Users';
+import {useEffect,useState} from 'react'
+// fake data import Users from '../data/Users';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listUsers } from '../src/graphql/queries';
 
 
 
 export default function ContactsScreen() {
-  console.log('9945', ChatRooms[0])
+
+  const [users,setUsers] = useState([])
+
+  useEffect(()=>{
+    const fetchUsers = async()=>{
+      try {
+        const usersData = await API.graphql(
+          graphqlOperation(
+            listUsers
+          )
+        )
+      //  console.log(usersData)
+        setUsers(usersData.data.listUsers.items)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchUsers()
+  },[])
+
+ // console.log('9945', ChatRooms[0])
   return (
     <View style={styles.container}>
       {/* <ChatListIem chatRoom={ChatRooms[0]} /> */}
       <FlatList
         style={{ width: "100%" }}
-        data={Users}
+        data={users}
         renderItem={({ item }) => <ContactListItem user={item} />}
         keyExtractor={(item) => item.id}
       />

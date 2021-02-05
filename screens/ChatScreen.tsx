@@ -9,7 +9,7 @@ import NewMessageButton from '../components/NewMessageButton';
 
 
 export default function ChatScreen() {
-  console.log('9945',ChatRooms[0])
+ // console.log('9945',ChatRooms[0])
   return (
     <View style={styles.container}>
       {/* <ChatListIem chatRoom={ChatRooms[0]} /> */}
